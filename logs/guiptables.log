@@ -1,0 +1,94 @@
+2025-02-05 17:31:03
+Trying to: Insert rule above 3
+$ iptables -t filter -I FORWARD 3 -i docker0 -s 127.0.0.1
+OK! Rule applied
+-
+2025-02-05 17:31:10
+Trying to: Delete rule 3 from
+                table: FILTER, chain: FORWARD
+$ iptables -t filter -D FORWARD 3
+OK! Rule deleted
+-
+2025-02-06 09:04:38
+Trying to: Add new rule
+$ iptables -t filter -A INPUT -i eth0 -p tcp --dport 80 -s 127.0.0.1 -d 10.210.123.1 -j ACCEPT
+OK! Rule applied
+-
+2025-02-06 09:04:55
+Trying to: Delete rule 1 from
+                table: FILTER, chain: INPUT
+$ iptables -t filter -D INPUT 1
+OK! Rule deleted
+-
+2025-02-06 09:05:06
+Trying to: Add new rule
+$ iptables -t filter -A INPUT -i docker0 -p tcp --dport 80 -s 127.0.0.1 -d 10.210.123.1 -j ACCEPT
+OK! Rule applied
+-
+2025-02-06 09:28:18
+Trying to: Delete rule 1 from
+                table: FILTER, chain: INPUT
+$ iptablaes -t filter -D INPUT 1
+OK! Rule deleted
+-
+2025-02-06 09:28:34
+Trying to: Delete rule 1 from
+                table: FILTER, chain: INPUT
+$ iptablaes -t filter -D INPUT 1
+OK! Rule deleted
+-
+2025-02-06 10:46:49
+Trying to: Add new rule
+$ iptables -t filter -A INPUT -i eth0 -s 127.0.0.1 -d 10.210.123.1 -j ACCEPT
+OK! Rule applied
+-
+2025-02-06 10:47:01
+Trying to: Delete rule 1 from
+                table: FILTER, chain: INPUT
+$ iptables -t filter -D INPUT 1
+OK! Rule deleted
+-
+2025-02-06 10:47:44
+Trying to: Add new rule
+$ iptables -t filter -A INPUT -i eth0 -s 127.0.0.1 -d 10.210.123.1 -j ACCEPT
+OK! Rule applied
+-
+2025-02-06 10:47:46
+Trying to: Add new rule
+$ iptables -t filter -A INPUT -i eth0 -s 127.0.0.1 -d 10.210.123.1 -j ACCEPT
+OK! Rule applied
+-
+2025-02-06 10:47:48
+Trying to: Add new rule
+$ iptables -t filter -A INPUT -i eth0 -s 127.0.0.1 -d 10.210.123.1 -j ACCEPT
+OK! Rule applied
+-
+2025-02-06 10:47:48
+Trying to: Add new rule
+$ iptables -t filter -A INPUT -i eth0 -s 127.0.0.1 -d 10.210.123.1 -j ACCEPT
+OK! Rule applied
+-
+2025-02-06 10:48:10
+Trying to: Add new rule
+$ iptables -t filter -A OUTPUT -i eth0 -s 127.0.0.1 -d 10.210.123.1 -j ACCEPT
+ERR! iptables v1.8.10 (nf_tables): Can't use -i with OUTPUT
+
+Try 'iptables -h' or 'iptables --help' for more information.
+
+-
+2025-02-06 10:48:25
+Trying to: Add new rule
+$ iptables -t filter -A OUTPUT -o eth0 -s 127.0.0.1 -d 10.210.123.1 -j ACCEPT
+OK! Rule applied
+-
+2025-02-06 10:48:39
+Trying to: Add new rule
+$ iptables -t filter -A OUTPUT -o eth0 -s 127.0.0.1 -d 10.210.123.1 -j ACCEPT
+OK! Rule applied
+-
+2025-02-06 10:48:52
+Trying to: Delete rule 1 from
+                table: FILTER, chain: OUTPUT
+$ iptables -t filter -D OUTPUT 1
+OK! Rule deleted
+-

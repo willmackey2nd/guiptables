@@ -181,7 +181,7 @@
             </div>
 
             <div>
-                <span id="badge-table" class="badge bg-primary">Table: Filter</span>
+                <span id="badge-table" class="badge bg-primary">TableAASR: Filter</span>
                 <span id="badge-chain" class="badge bg-warning">Chain: FORWARD</span>
             </div>
 
@@ -272,6 +272,89 @@
 
             <div class="modal-footer">
 
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button id="rule-confirm-button" type="button" data-dismiss="modal"
+                    class="pf-c-button pf-m-primary">Apply
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Filter Rules Modal -->
+<div id="filterRuleModal" class="modal fade" tabindex="0" role="dialog" aria-labelledby="ruleModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times; </button>
+                <h3 id="rule-modal-title">Editing rule</h3>
+            </div>
+
+            <div>
+                <span id="badge-table" class="badge bg-primary">Table: Filter</span>
+                <span id="badge-chain" class="badge bg-warning">Chain: FORWARD</span>
+            </div>
+            <hr>
+            <div>
+                <div>
+                    <label for="input-interface-rule-menu">Input</label>
+                    <select id="input-interface-rule-menu" class="ct-select">
+                        <option value="lo">lo</option>
+                    </select>
+
+                    <label for="output-interface-rule-menu">Output</label>
+                    <select id="output-interface-rule-menu" class="ct-select">
+                        <option value="lo">lo</option>
+                    </select>
+                </div>
+            </div>
+            <hr>
+            <div>
+                <label for="protocol-rule-menu">Protocol:</label>
+                <select id="protocol-rule-menu" class="ct-select">
+                    <option value="">all (default)</option>
+                    <option value="tcp">tcp</option>
+                    <option value="udp">udp</option>
+                    <option value="icmp">icmp</option>
+                </select>
+
+                <label for="protocol-rule-opts-text">Options:</label>
+                <input class="form-check-input" type="text" placeholder="--dport 80" id="protocol-rule-opts-text">
+
+            </div>
+            <hr>
+            <div>
+                <label for="source-source-text">Source</label>
+                <br>
+                <label for="source-source-ip-text">IP:</label>
+                <input class="form-check-input" type="text" placeholder="127.0.0.1" id="source-ip-text">
+                <label for="source-port-text">Port:</label>
+                <input class="form-check-input" type="text" placeholder="12435" id="source-port-text">
+                <br>
+                <label for="destination-ip-text">Destination</label>
+                <br>
+                <label for="source-dest-ip-text">IP:</label>
+                <input class="form-check-input" type="text" placeholder="192.168.0.1" id="destination-ip-text">
+                <label for="destination-port-text">Port:</label>
+                <input class="form-check-input" type="text" placeholder="12435" id="destination-port-text">
+            </div>
+            <hr>
+            <div>
+                <label for="job-rule-menu">Action:</label>
+                <select id="job-rule-menu" class="ct-select">
+                    <option value="ACCEPT">ACCEPT</option>
+                    <option value="DROP">DROP</option>
+                    <option value="REJECT">REJECT</option>
+                    <option value="LOG">LOG</option>
+                    <option value="MASQUERADE">MASQUERADE</option>
+                </select>
+            </div>
+            <hr>
+            <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <button id="rule-confirm-button" type="button" data-dismiss="modal"
                     class="pf-c-button pf-m-primary">Apply

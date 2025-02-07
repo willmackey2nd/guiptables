@@ -30,12 +30,13 @@ function registerEventListeners() {
     setConfigButton();
 
     setLogButton();
+
+   
 }
 
 function setAddButtons() {
-
+    
     document.getElementById("nat-add-rule").onclick = (ev) => {
-
         if (rules.getActiveChain(consts.nat) == consts.showAll) {
             ev.stopPropagation();
 
@@ -44,26 +45,26 @@ function setAddButtons() {
         else widgets.ruleModal(
             operations.getInterfaceNames(), 
             consts.nat,
-            ()=> rules.applyRuleCallback(consts.nat)
+            ()=> rules.applyFilterRuleCallback(consts.nat)
         );
     };
 
-    document.getElementById("filter-add-rule").onclick = (ev) => {
 
+    document.getElementById("filter-add-rule").onclick = (ev) => {
 
         if (rules.getActiveChain(consts.filter) == consts.showAll) {
             ev.stopPropagation();
-
             widgets.tableMessage(consts.filter, consts.selectChainMsg);
         }
 
         else widgets.ruleModal(
             operations.getInterfaceNames(),
             consts.filter,
-            ()=> rules.applyRuleCallback(consts.filter),     
+            ()=> {
+                rules.applyFilterRuleCallback(consts.filter)
+            },     
         );
     };
-
 }
 
 
@@ -104,31 +105,23 @@ function setLogButton(){
 }
 
 function start(){
-    
     $('#modal-content').load('./modals.html');
-
     operations.authenticate(
         load,
         () => widgets.errorModal("Access denied", 
             "You don't have enough privileges to access this page.")        
         );
-    
-    
 }
 
-function load() {
+async function load() {    
 
-    
-    operations.isIptablesInstalled(
-        () => {rules.addRulesInTable().then(res => {setChainMenus();});}, 
-        () => widgets.installationModal(
-            () => operations.installIptables())
-    );
+    rules.addRulesInTable().then(res => {setChainMenus();});
+
 }
-
 
 
 document.addEventListener('readystatechange', event => {
+    
     registerEventListeners();
     }
 );

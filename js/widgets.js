@@ -2,6 +2,8 @@
 import * as consts from './constants.js';
 import * as rules from './rules.js';
 import * as config from './config.js'
+import RuleData from './model/RuleData.js';
+import * as operations from './operations.js'
 
 export function dangerModal(title, confirmCallback) {
 
@@ -104,8 +106,6 @@ export function logModal(contentArr){
 }   
 
 export function ruleModal(interfaceNames, table, applyCallback, chain, ruleNumber) {
-
-
     if (chain == null)
         chain = rules.getActiveChain(table);
 
@@ -115,53 +115,112 @@ export function ruleModal(interfaceNames, table, applyCallback, chain, ruleNumbe
     else
         title = consts.AddNewRule;
 
-    loadRuleModal(title, table, chain, interfaceNames, null);
+    let ruleWindow;
+    if (table == "nat") {
+        ruleWindow = document.getElementById("ruleModal");
+    }
+    else {
+        ruleWindow = document.getElementById("filterRuleModal");
+    }
 
-    document.getElementById("rule-confirm-button").onclick = applyCallback;
-
-
+    loadRuleModal(title, table, chain, interfaceNames, null, null, null);
+    ruleWindow.querySelector("#rule-confirm-button").onclick = applyCallback;
 }
 
-function loadRuleModal(title, table, chain, interfaces, applyCallback) {
+
+
+export function ruleEditModal(interfaceNames, table, applyCallback, chain, ruleNumber) {
+    let jassoo = rules.jsonData;
+    //console.log("Table: " + table + " Chain: " + chain + " Rule: " + ruleNumber);
+    //console.log("jassoo: " + JSON.stringify(jassoo));
+
+    let rule = jassoo.find(t => t.name == table).chains.find(c => c.name == chain).rules.find(r => r.index == ruleNumber);
+    //console.log("Rule to edit: " + JSON.stringify(rule));
+
+    if (chain == null)
+        chain = rules.getActiveChain(table);
+
+    let title;
+    if(ruleNumber)
+        title = "Editing rule #" + ruleNumber;
+    else
+        title = consts.AddNewRule;
+
+    console.log("callback: " + applyCallback);
+
+    loadRuleModal(title, table, chain, interfaceNames, null, ruleNumber, rule);
+
+    let ruleWindow;
+    if (table == "nat") {
+        ruleWindow = document.getElementById("ruleModal");
+    }
+    else {
+        ruleWindow = document.getElementById("filterRuleModal");
+    }
+    console.log("Rule window: " + ruleWindow + ", call back: " + applyCallback);
+    ruleWindow.querySelector("#rule-confirm-button").onclick = applyCallback;
+}
+
+
+function loadRuleModal(title, table, chain, interfaces, applyCallback, ruleNumber, ruleDataJson) {
 
     let interfacesOptionsHTML = "";
 
     interfaces.forEach(i => {
-
         if (!i) return;
-
-        interfacesOptionsHTML +=
-            `
-        <option value="${i}">${i}</option>
-        `
+        interfacesOptionsHTML += `<option value="${i}">${i}</option>`
     });
 
-    if (table == "nat")
+    let ruleWindow;
+    if (table == "nat") {
         table = table.toUpperCase();
-    else
+        ruleWindow = document.getElementById("ruleModal");
+    }
+    else {
         table = table.charAt(0).toUpperCase() + table.substring(1);
+        ruleWindow = document.getElementById("filterRuleModal");
+    }
 
-    document.getElementById("rule-modal-title").innerText = title;
-    document.getElementById("badge-table").innerText = "Table: " + table;
-    document.getElementById("badge-chain").innerText = "Chain: " + chain;
-    document.getElementById("rule-confirm-button").onclick = applyCallback;
+    ruleWindow.querySelector("#rule-modal-title").innerText = title;
+    ruleWindow.querySelector("#badge-table").innerText = "Table: " + table;
+    ruleWindow.querySelector("#badge-chain").innerText = "Chain: " + chain;
+    ruleWindow.querySelector("#rule-confirm-button").onclick = applyCallback;
 
-    setInputBehavior("input-interface-rule-menu", "input-interface-rule-check", interfacesOptionsHTML);
-    setInputBehavior("output-interface-rule-menu", "output-interface-rule-check", interfacesOptionsHTML);
-    setInputBehavior("protocol-rule-menu", "protocol-rule-check");
-    setInputBehavior("job-rule-menu", "job-rule-check");
-    setInputBehavior("source-rule-text", "source-rule-check");
-    setInputBehavior("destination-rule-text", "destination-rule-check");
+    //setInputBehavior(ruleWindow, "input-interface-rule-menu", "input-interface-rule-check", interfacesOptionsHTML);
+    //setInputBehavior(ruleWindow, "output-interface-rule-menu", "output-interface-rule-check", interfacesOptionsHTML);
+    //setInputBehavior(ruleWindow, "protocol-rule-menu", "protocol-rule-check");
+    //setInputBehavior(ruleWindow, "job-rule-menu", "job-rule-check");
+    //setInputBehavior(ruleWindow, "source-ip-text", "source-rule-check");
+    //setInputBehavior(ruleWindow, "source-port-text", "source-rule-check");
+    //setInputBehavior(ruleWindow, "destination-ip-text", "destination-rule-check");
+    //setInputBehavior(ruleWindow, "destination-port-text", "destination-rule-check");
 
-
+    console.log("Rule data: " + JSON.stringify(ruleDataJson));
+    if (ruleDataJson) {
+        ruleWindow.querySelector("#input-interface-rule-menu").value = ruleDataJson.inputInterface ?? "";
+        ruleWindow.querySelector("#output-interface-rule-menu").value = ruleDataJson.outputInterface ?? "";
+        ruleWindow.querySelector("#protocol-rule-menu").value = ruleDataJson.protocol ?? "";
+        ruleWindow.querySelector("#job-rule-menu").value = ruleDataJson.action ?? "";
+        ruleWindow.querySelector("#source-ip-text").value = ruleDataJson.source ?? "";
+        ruleWindow.querySelector("#source-port-text").value = ruleDataJson.sourcePort ?? "";
+        ruleWindow.querySelector("#destination-ip-text").value = ruleDataJson.destination ?? "";
+        ruleWindow.querySelector("#destination-port-text").value = ruleDataJson.destinationPort ?? "";
+        //ruleWindow.querySelector("#destination-rule-text").value = ruleDataJson.toDestination ?? "";
+        ruleWindow.querySelector("#protocol-rule-opts-text").value = ruleDataJson.protocolOptions ?? "";
+        
+    }
 }
 
-function setInputBehavior(inputName, inputCheckName, innerHTML) {
-    let input = document.getElementById(inputName);
+function setInputBehavior(ruleWindow, inputName, inputCheckName, innerHTML) {
+    let input = ruleWindow.querySelector(`#${inputName}`);
     if (innerHTML)
         input.innerHTML = innerHTML;
 
-    input.onmouseup = () => document.getElementById(inputCheckName).checked = true;
+    try {
+        input.onmouseup = () => ruleWindow.querySelector(`#${inputCheckName}`).checked = true;
+    } catch (error) {
+        console.error(`Error setting input behavior for ${inputName}:`, error);
+    }
 }
 
 export function cancelRuleModal() {

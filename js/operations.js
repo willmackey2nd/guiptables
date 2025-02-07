@@ -77,6 +77,28 @@ export function deleteRule(ruleData) {
 
 }
 
+
+export function loadRule(ruleData) {
+    return new Promise((resolve, reject) => {
+        let args = ["iptables", "-t", ruleData.ruleTable, "-L", ruleData.ruleChain, ruleData.ruleIndexInChain, "-n", "-v"];
+        let response = "";
+        cockpit.spawn(args, { superuser: "required" })
+            .stream(res => response += res)
+            .always(() => {
+                ;
+            })
+            .then(res =>  {
+                console.log("Loaded rule: " + response);
+                resolve(response);
+            })
+            .catch(res => {
+                response = res
+                reject(response);
+            });
+    });
+}
+
+
 export function getInterfaceNames() {
 
     if (interfaceNames.length > 0)

@@ -52,7 +52,7 @@
                 </select>
 
                 <button id="filter-add-rule" class="pf-c-button pf-m-secondary network-privileged"
-                    data-target="#ruleModal" data-toggle="modal" data-test-stable="yes">
+                    data-target="#filterRuleModal" data-toggle="modal" data-test-stable="yes">
                     <i class="fa fa-plus-circle"></i>&nbsp; Add rule
                 </button>
 
@@ -67,16 +67,14 @@
             <thead>
                 <th></th>
                 <th>#</th>
-                <th>Packets</th>
-                <th>Bytes</th>
                 <th>Chain</th>
-                <th>Job</th>
-                <th>Protocol</th>
-                <th>Options</th>
+                <th>Action</th>
                 <th>Input</th>
                 <th>Output</th>
+                <th>Protocol</th>
                 <th>Source</th>
                 <th>Destination</th>
+                <th>Options</th>
                 <th></th>
             </thead>
             <tbody id="filter-rules-table">
@@ -98,7 +96,7 @@
                     </select>
 
                     <button id="nat-add-rule" class="pf-c-button pf-m-secondary network-privileged"
-                        data-test-stable="yes" data-toggle="modal" data-target="#ruleModal">
+                        data-test-stable="yes" data-toggle="modal" data-target="#natRuleModal">
                         <i class="fa fa-plus-circle"></i>&nbsp; Add rule
                     </button>
 
@@ -116,16 +114,17 @@
             <thead>
                 <th></th>
                 <th>#</th>
-                <th>Packets</th>
-                <th>Bytes</th>
                 <th>Chain</th>
-                <th>Job</th>
-                <th>Protocol</th>
-                <th>Options</th>
+                <th>Action</th>
+                <th>Chain</th>
                 <th>Input</th>
                 <th>Output</th>
+                <th>Protocol</th>
                 <th>Source</th>
                 <th>Destination</th>
+                <th>From source</th>
+                <th>To destination</th>
+                <th>Options</th>
                 <th></th>
             </thead>
             <tbody id="nat-rules-table">

@@ -1,3 +1,5 @@
 {"savePath":"/usr/share/cockpit/guiptables/saves/guiptables.save",
 "logPath":"/usr/share/cockpit/guiptables/logs/guiptables.log",
-"autoSave":false}
+"autoSave":false,
+"filterChains": ["INPUT", "FORWARD", "OUTPUT"],
+"natChains": ["PREROUTING", "POSTROUTING"]}
